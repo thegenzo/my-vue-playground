@@ -1,22 +1,30 @@
 <script setup>
-const messages = [
-	{ id: '1', data: 'Why are u gae?' },
-	{ id: '2', data: 'u are gae' },
-	{ id: '3', data: 'u are transgenda' },
-	{ id: '4', data: 'so who is geh?' },
-]
+import axios from 'axios';
+import { onMounted, ref } from 'vue';
+
+const messages = ref([])
+
+onMounted( async () => {
+	const data = await axios.get('http://localhost:8000/api/message')
+	console.log(data)
+	messages.value = data.data.data
+})
 </script>
 
 <template>
 	<v-container>
 		<v-row>
-			<v-col row="5" sm="5">
+			<v-col row="6" sm="6">
 				<v-card>
 					<v-card-title class="bg-pink">Message Component</v-card-title>
-					<v-card-text>
+					<v-card-text class="pa-5">
+						<router-link :to="{ name: 'MessageCreate' }">
+							<v-btn class="bg-secondary">Create new message</v-btn>
+						</router-link>
 						<TransitionGroup name="list" tag="ul" class="ma-5">
-							<li v-for="message in messages" :key="message.id">
-								<router-link :to="{ name: 'MessageDetail', params: { id: message.id } }">{{ message.data }}</router-link>
+							<li v-for="message in messages" :key="message.id" class="my-3">
+								<p>From: {{ message.from }} - To: {{ message.to }}</p>
+								<router-link :to="{ name: 'MessageDetail', params: { id: message.id } }">{{ message.content.substring(0,50) + "...(Click for details)" }}</router-link>
 							</li>
 						</TransitionGroup>
 					</v-card-text>

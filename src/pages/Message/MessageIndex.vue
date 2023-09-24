@@ -1,4 +1,5 @@
 <script setup>
+import AlertBox from '../../components/AlertBox.vue'
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 
@@ -22,10 +23,13 @@ onMounted( async () => {
 							<v-btn class="bg-secondary">Create new message</v-btn>
 						</router-link>
 						<TransitionGroup name="list" tag="ul" class="ma-5">
-							<li v-for="message in messages" :key="message.id" class="my-3">
+							<li v-for="message in messages" :key="message.id" class="my-3" v-if="messages.length > 0">
 								<p>From: {{ message.from }} - To: {{ message.to }}</p>
 								<router-link :to="{ name: 'MessageDetail', params: { id: message.id } }">{{ message.content.substring(0,50) + "...(Click for details)" }}</router-link>
 							</li>
+							<AlertBox>
+								<h3 class="text-red">No data found!</h3>
+							</AlertBox>
 						</TransitionGroup>
 					</v-card-text>
 				</v-card>

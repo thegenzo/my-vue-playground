@@ -11,7 +11,7 @@ const routes = [
 	{ path: '/', name: 'ButtonCounter', component: () => ButtonCounter },
 	{ path: '/message', name: 'MessageIndex', component: () => MessageIndex },
 	{ path: '/message/create', name: 'MessageCreate', component: () => MessageCreate },
-	{ path: '/message/:id', name: 'MessageDetail', component: () => MessageDetail },
+	{ path: '/message/:id', name: 'MessageDetail', component: MessageDetail },
 	{ path: '/watchers', name: 'Watchers', component: () => Watchers },
 	{ path: '/blog', name: 'BlogPost', component: () => BlogPost },
 	{ path: '/blog/create', name: 'BlogCreate', component: () => BlogCreate },

@@ -14,21 +14,23 @@ const state = reactive({
 	content: ''
 })
 
+const errors = ref([])
+
 const onToggleEdit = () => {
 	toggleEdit.value = !toggleEdit.value
 }
 
 onMounted(async () => {
-	const data = await axios.get(`http://localhost:8000/api/message/${route.params.id}`)
-						.then((res) => {
-							state.from = res.data.data.from
-							state.to = res.data.data.to
-							state.content = res.data.data.content
-							message.value = res.data.data
-						})
-						.catch((err) => {
-							console.log(err.message)
-						})
+	await axios.get(`http://localhost:8000/api/message/${route.params.id}`)
+		.then((res) => {
+			state.from = res.data.data.from
+			state.to = res.data.data.to
+			state.content = res.data.data.content
+			message.value = res.data.data
+		})
+		.catch((err) => {
+			console.log(err.message)
+		})
 })
 
 const deleteMessage = async (id) => {
@@ -48,6 +50,10 @@ const onUpdate = async (id) => {
 	.then((res) => {
 		router.push({ name: 'MessageIndex' })
 	})
+	.catch((err) => {
+		errors.value = err.response.data.data
+	})
+
 }
 </script>
 
@@ -73,8 +79,11 @@ const onUpdate = async (id) => {
 					<v-card-text class="pa-5">
 						<v-form @submit.prevent="onUpdate">
 							<v-text-field v-model="state.from" label="From..."></v-text-field>
+							<v-alert class="bg-red my-3" v-if="errors.from">{{ errors.from[0] }}</v-alert>
 							<v-text-field v-model="state.to" label="To..."></v-text-field>
+							<v-alert class="bg-red my-3" v-if="errors.to">{{ errors.to[0] }}</v-alert>
 							<v-textarea v-model="state.content" label="Content..."></v-textarea>
+							<v-alert class="bg-red my-3" v-if="errors.content">{{ errors.content[0] }}</v-alert>
 							<v-btn type="submit" class="bg-success">Submit</v-btn>
 							<v-btn @click.prevent="onToggleEdit" class="bg-warning ml-3">Cancel Edit</v-btn>
 						</v-form>

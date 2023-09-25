@@ -4,11 +4,19 @@ import axios from 'axios';
 import { onMounted, ref } from 'vue';
 
 const messages = ref([])
+const error = ref('')
+const isLoading = ref(true)
 
 onMounted( async () => {
 	const data = await axios.get('http://localhost:8000/api/message')
-	console.log(data)
-	messages.value = data.data.data
+					.then((res) => {
+						messages.value = res.data.data
+						isLoading.value = !isLoading.value
+					})
+					.catch((err) => {
+						error.value = err.message
+						isLoading.value = !isLoading.value
+					})
 })
 </script>
 
@@ -23,12 +31,15 @@ onMounted( async () => {
 							<v-btn class="bg-secondary">Create new message</v-btn>
 						</router-link>
 						<TransitionGroup name="list" tag="ul" class="ma-5">
-							<li v-for="message in messages" :key="message.id" class="my-3" v-if="messages.length > 0">
+							<li v-for="message in messages" :key="message.id" class="my-4">
 								<p>From: {{ message.from }} - To: {{ message.to }}</p>
+								<small>{{ new Date(message.created_at).toDateString() }}</small>
+								<br>
 								<router-link :to="{ name: 'MessageDetail', params: { id: message.id } }">{{ message.content.substring(0,50) + "...(Click for details)" }}</router-link>
 							</li>
-							<AlertBox>
-								<h3 class="text-red">No data found!</h3>
+							<h3 v-if="isLoading">Loading...</h3>
+							<AlertBox v-if="error">
+								<h3 class="text-red">{{ error }}</h3>
 							</AlertBox>
 						</TransitionGroup>
 					</v-card-text>

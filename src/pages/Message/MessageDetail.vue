@@ -2,6 +2,7 @@
 import axios from 'axios'
 import { onMounted, ref, reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useToast } from 'vue-toast-notification';
 
 const route = useRoute()
 const router = useRouter()
@@ -15,6 +16,8 @@ const state = reactive({
 })
 
 const errors = ref([])
+
+const toast = useToast()
 
 const onToggleEdit = () => {
 	toggleEdit.value = !toggleEdit.value
@@ -38,6 +41,9 @@ const deleteMessage = async (id) => {
 	if(confirmed) {
 		await axios.delete(`http://localhost:8000/api/message/${message.value.id}`)
 		router.push({ name: 'MessageIndex' })
+		toast.success('Message deleted!', {
+			position: 'top-right'
+		})
 	}
 }
 
@@ -49,9 +55,15 @@ const onUpdate = async (id) => {
 	})
 	.then((res) => {
 		router.push({ name: 'MessageIndex' })
+		toast.success('Message updated!', {
+			position: 'top-right'
+		})
 	})
 	.catch((err) => {
 		errors.value = err.response.data.data
+		toast.error('Message failed to update', {
+			position: 'top-right'
+		})
 	})
 
 }

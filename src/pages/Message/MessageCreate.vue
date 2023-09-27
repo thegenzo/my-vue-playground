@@ -26,6 +26,7 @@
 import { reactive, ref } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
+import { useToast } from 'vue-toast-notification';
 
 const router = useRouter()
 
@@ -37,6 +38,8 @@ const state = reactive({
 
 const errors = ref([])
 
+const toast = useToast()
+
 const onSubmit = async () => {
 	console.log(`${state.from}, ${state.to}, ${state.content}`)
 	await axios.post('http://localhost:8000/api/message', {
@@ -47,10 +50,16 @@ const onSubmit = async () => {
 	.then((res) => {
 		if(res.status === 201) {
 			router.push({ name: 'MessageIndex' })
+			toast.success('Message created!', {
+				position: 'top-right'
+			});
 		}
 	})
 	.catch((err) => {
 		errors.value = err.response.data.data
+		toast.error('Message failed to create', {
+			position: 'top-right'
+		})
 		console.log(err)
 	})
 }

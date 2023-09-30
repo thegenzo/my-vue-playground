@@ -50,7 +50,7 @@ const onSubmit = async () => {
 	.then((res) => {
 		if(res.status === 201) {
 			router.push({ name: 'MessageIndex' })
-			toast.success('Message created!', {
+			toast.success(res.data.message, {
 				position: 'top-right'
 			});
 		}

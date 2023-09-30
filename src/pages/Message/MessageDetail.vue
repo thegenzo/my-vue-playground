@@ -40,10 +40,12 @@ const deleteMessage = async (id) => {
 	const confirmed = window.confirm('Are you sure you want to delete this message?');
 	if(confirmed) {
 		await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/message/${message.value.id}`)
-		router.push({ name: 'MessageIndex' })
-		toast.success('Message deleted!', {
-			position: 'top-right'
-		})
+			.then((res) => {
+				router.push({ name: 'MessageIndex' })
+				toast.success(res.data.message, {
+					position: 'top-right'
+				})
+			})
 	}
 }
 
@@ -55,7 +57,7 @@ const onUpdate = async (id) => {
 	})
 	.then((res) => {
 		router.push({ name: 'MessageIndex' })
-		toast.success('Message updated!', {
+		toast.success(res.data.message, {
 			position: 'top-right'
 		})
 	})

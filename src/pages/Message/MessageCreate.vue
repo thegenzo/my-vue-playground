@@ -57,7 +57,7 @@ const onSubmit = async () => {
 	})
 	.catch((err) => {
 		errors.value = err.response.data.data
-		toast.error('Message failed to create', {
+		toast.error(err.response.data.message, {
 			position: 'top-right'
 		})
 		console.log(err)

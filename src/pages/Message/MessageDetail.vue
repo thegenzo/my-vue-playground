@@ -46,6 +46,11 @@ const deleteMessage = async (id) => {
 					position: 'top-right'
 				})
 			})
+			.catch((err) => {
+				toast.error(err.response.data.message, {
+					position: 'top-right'
+				})
+			})
 	}
 }
 
@@ -63,7 +68,7 @@ const onUpdate = async (id) => {
 	})
 	.catch((err) => {
 		errors.value = err.response.data.data
-		toast.error('Message failed to update', {
+		toast.error(err.response.data.message, {
 			position: 'top-right'
 		})
 	})

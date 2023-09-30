@@ -42,7 +42,7 @@ const toast = useToast()
 
 const onSubmit = async () => {
 	console.log(`${state.from}, ${state.to}, ${state.content}`)
-	await axios.post('http://localhost:8000/api/message', {
+	await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/message`, {
 		from: state.from,
 		to: state.to,
 		content: state.content

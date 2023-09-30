@@ -8,7 +8,7 @@ const error = ref('')
 const isLoading = ref(true)
 
 onMounted( async () => {
-	const data = await axios.get('http://localhost:8000/api/message')
+	const data = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/message`)
 					.then((res) => {
 						messages.value = res.data.data
 						isLoading.value = !isLoading.value

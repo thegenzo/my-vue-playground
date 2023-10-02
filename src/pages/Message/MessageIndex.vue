@@ -1,22 +1,24 @@
 <script setup>
 import AlertBox from '../../components/AlertBox.vue'
 import axios from 'axios';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, inject } from 'vue';
 
 const messages = ref([])
 const error = ref('')
 const isLoading = ref(true)
 
+const backendUrl = inject('backendUrl')
+
 onMounted( async () => {
-	const data = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/message`)
-					.then((res) => {
-						messages.value = res.data.data
-						isLoading.value = !isLoading.value
-					})
-					.catch((err) => {
-						error.value = err.message
-						isLoading.value = !isLoading.value
-					})
+	await axios.get(`${backendUrl}/api/message`)
+		.then((res) => {
+			messages.value = res.data.data
+			isLoading.value = !isLoading.value
+		})
+		.catch((err) => {
+			error.value = err.message
+			isLoading.value = !isLoading.value
+		})
 })
 </script>
 

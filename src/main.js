@@ -5,6 +5,9 @@ import App from './App.vue'
 import router from './routes'
 import { PiniaVuePlugin, createPinia } from 'pinia'
 
+// Config
+import { backendUrl } from './config/config'
+
 // Vuetify
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
@@ -22,8 +25,11 @@ const vuetify = createVuetify({
 
 const pinia = createPinia()
 
-createApp(App)
-	.use(pinia)
+const app = createApp(App)
+
+app.provide('backendUrl', backendUrl)
+
+app.use(pinia)
 	.use(PiniaVuePlugin)
 	.use(router)
 	.use(vuetify)

@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, inject } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toast-notification';
@@ -40,9 +40,11 @@ const errors = ref([])
 
 const toast = useToast()
 
+const backendUrl = inject('backendUrl')
+
 const onSubmit = async () => {
 	console.log(`${state.from}, ${state.to}, ${state.content}`)
-	await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/message`, {
+	await axios.post(`${backendUrl}/api/message`, {
 		from: state.from,
 		to: state.to,
 		content: state.content

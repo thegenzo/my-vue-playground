@@ -1,6 +1,6 @@
 <script setup>
 import axios from 'axios'
-import { onMounted, ref, reactive } from 'vue'
+import { onMounted, ref, reactive, inject } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useToast } from 'vue-toast-notification';
 
@@ -15,6 +15,8 @@ const state = reactive({
 	content: ''
 })
 
+const backendUrl = inject('backendUrl')
+
 const errors = ref([])
 
 const toast = useToast()
@@ -24,7 +26,7 @@ const onToggleEdit = () => {
 }
 
 onMounted(async () => {
-	await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/message/${route.params.id}`)
+	await axios.get(`${backendUrl}/api/message/${route.params.id}`)
 		.then((res) => {
 			state.from = res.data.data.from
 			state.to = res.data.data.to
@@ -39,7 +41,7 @@ onMounted(async () => {
 const deleteMessage = async (id) => {
 	const confirmed = window.confirm('Are you sure you want to delete this message?');
 	if(confirmed) {
-		await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/message/${message.value.id}`)
+		await axios.delete(`${backendUrl}/api/message/${message.value.id}`)
 			.then((res) => {
 				router.push({ name: 'MessageIndex' })
 				toast.success(res.data.message, {

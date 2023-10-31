@@ -17,12 +17,12 @@ export const useCounterStore = defineStore('counter', () => {
 			count.value += parseInt(value.value)
 		}
 	}
-	function decrement() {
-		const numericValue = parseFloat(value.value)
-		if(!isNaN(numericValue)) {
-			count.value -= parseInt(value.value)
-		}
-	}
+ 	function decrement() {
+ 		const numericValue = parseFloat(value.value)
+ 		if(!isNaN(numericValue)) {
+ 			count.value -= parseInt(value.value)
+ 		}
+ 	}
 	function reset() {
 		count.value = 0
 		value.value = 0

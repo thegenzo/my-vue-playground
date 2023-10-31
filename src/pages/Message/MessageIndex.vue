@@ -10,7 +10,7 @@ const isLoading = ref(true)
 const backendUrl = inject('backendUrl')
 
 onMounted( async () => {
-	await axios.get(`${backendUrl}/api/message`)
+	await axios.get(`${backendUrl}/message`)
 		.then((res) => {
 			messages.value = res.data.data
 			isLoading.value = !isLoading.value

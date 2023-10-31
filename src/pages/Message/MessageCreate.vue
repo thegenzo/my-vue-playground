@@ -44,7 +44,7 @@ const backendUrl = inject('backendUrl')
 
 const onSubmit = async () => {
 	console.log(`${state.from}, ${state.to}, ${state.content}`)
-	await axios.post(`${backendUrl}/api/message`, {
+	await axios.post(`${backendUrl}/message`, {
 		from: state.from,
 		to: state.to,
 		content: state.content

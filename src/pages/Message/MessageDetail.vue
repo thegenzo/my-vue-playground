@@ -26,7 +26,7 @@ const onToggleEdit = () => {
 }
 
 onMounted(async () => {
-	await axios.get(`${backendUrl}/api/message/${route.params.id}`)
+	await axios.get(`${backendUrl}/message/${route.params.id}`)
 		.then((res) => {
 			state.from = res.data.data.from
 			state.to = res.data.data.to
@@ -41,7 +41,7 @@ onMounted(async () => {
 const deleteMessage = async (id) => {
 	const confirmed = window.confirm('Are you sure you want to delete this message?');
 	if(confirmed) {
-		await axios.delete(`${backendUrl}/api/message/${message.value.id}`)
+		await axios.delete(`${backendUrl}/message/${message.value.id}`)
 			.then((res) => {
 				router.push({ name: 'MessageIndex' })
 				toast.success(res.data.message, {
@@ -57,7 +57,7 @@ const deleteMessage = async (id) => {
 }
 
 const onUpdate = async (id) => {
-	await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/message/${route.params.id}`, {
+	await axios.put(`${import.meta.env.VITE_BACKEND_URL}/message/${route.params.id}`, {
 		from: state.from,
 		to: state.to,
 		content: state.content
